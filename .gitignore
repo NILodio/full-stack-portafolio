@@ -1,3 +1,5 @@
 .vscode
-.env
 .python-version
+.env.local
+.env.production
+.env.staging
