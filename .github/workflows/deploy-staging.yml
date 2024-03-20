@@ -6,6 +6,10 @@ on:
       - master
 
 jobs:
+  build:
+    environment: Staging
+  
+  steps:
   deploy:
     runs-on:
       - self-hosted
