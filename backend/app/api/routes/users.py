@@ -122,7 +122,7 @@ def read_user_me(session: SessionDep, current_user: CurrentUser) -> Any:
     return current_user
 
 
-@router.post("/openDaniloElmejor", response_model=UserOut)
+@router.post("/open", response_model=UserOut)
 def create_user_open(session: SessionDep, user_in: UserCreateOpen) -> Any:
     """
     Create new user without the need to be logged in.
