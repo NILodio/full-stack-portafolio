@@ -12,6 +12,36 @@ jobs:
       name: Staging
 
     steps:
+      - name: Make envfile
+        uses: SpicyPizza/create-envfile@v2.0
+        with:
+          ENVIRONMENT: staging
+          DOMAIN: ${{ secrets.DOMAIN_STAGING }}
+          PROJECT_NAME: ${{ secrets.PROJECT_NAME }}
+          STACK_NAME: ${{ secrets.STACK_NAME }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          FIRST_SUPERUSER: ${{ secrets.FIRST_SUPERUSER }}
+          FIRST_SUPERUSER_PASSWORD: ${{ secrets.FIRST_SUPERUSER_PASSWORD }}
+          USERS_OPEN_REGISTRATION : ${{ secrets.USERS_OPEN_REGISTRATION }}
+          EMAILS_FROM_EMAIL: ${{ secrets.EMAILS_FROM_EMAIL }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          SMTP_TLS: ${{ secrets.SMTP_TLS }}
+          SMTP_SSL: ${{ secrets.SMTP_SSL }}
+          SMTP_PORT : ${{ secrets.SMTP_PORT }}
+          POSTGRES_SERVER: ${{ secrets.POSTGRES_SERVER }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+          DOCKER_IMAGE_BACKEND: ${{ secrets.DOCKER_IMAGE_BACKEND }}
+          DOCKER_IMAGE_FRONTEND: ${{ secrets.DOCKER_IMAGE_FRONTEND }}
+          file_name: .env
+          fail_on_empty: false
+          sort_keys: false
+
       - name: Checkout
         uses: actions/checkout@v2
       
