@@ -13,9 +13,66 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    environment:
+      name: Test
+
+    env:
+      ENVIRONMENT: test
+      DOMAIN: ${{ secrets.DOMAIN_STAGING }}
+      PROJECT_NAME: ${{ secrets.PROJECT_NAME }}
+      STACK_NAME: ${{ secrets.STACK_NAME }}
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      FIRST_SUPERUSER: ${{ secrets.FIRST_SUPERUSER }}
+      FIRST_SUPERUSER_PASSWORD: ${{ secrets.FIRST_SUPERUSER_PASSWORD }}
+      USERS_OPEN_REGISTRATION: ${{ secrets.USERS_OPEN_REGISTRATION }}
+      EMAILS_FROM_EMAIL: ${{ secrets.EMAILS_FROM_EMAIL }}
+      SMTP_HOST: ${{ secrets.SMTP_HOST }}
+      SMTP_USER: ${{ secrets.SMTP_USER }}
+      SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+      SMTP_TLS: ${{ secrets.SMTP_TLS }}
+      SMTP_SSL: ${{ secrets.SMTP_SSL }}
+      SMTP_PORT: ${{ secrets.SMTP_PORT }}
+      POSTGRES_SERVER: ${{ secrets.POSTGRES_SERVER }}
+      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+      POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+      POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+      DOCKER_IMAGE_BACKEND: ${{ secrets.DOCKER_IMAGE_BACKEND }}
+      DOCKER_IMAGE_FRONTEND: ${{ secrets.DOCKER_IMAGE_FRONTEND }}
+      BACKEND_CORS_ORIGINS: ${{ secrets.BACKEND_CORS_ORIGINS }}
+
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Set up environment variables
+        run: |
+          touch .env
+          echo ENVIRONMENT=${ENVIRONMENT} >> .env
+          echo DOMAIN=${DOMAIN} >> .env
+          echo PROJECT_NAME=${PROJECT_NAME} >> .env
+          echo STACK_NAME=${STACK_NAME} >> .env
+          echo SECRET_KEY=${SECRET_KEY} >> .env
+          echo BACKEND_CORS_ORIGINS=${BACKEND_CORS_ORIGINS} >> .env
+          echo FIRST_SUPERUSER=${FIRST_SUPERUSER} >> .env
+          echo FIRST_SUPERUSER_PASSWORD=${FIRST_SUPERUSER_PASSWORD} >> .env
+          echo USERS_OPEN_REGISTRATION=${USERS_OPEN_REGISTRATION} >> .env
+          echo EMAILS_FROM_EMAIL=${EMAILS_FROM_EMAIL} >> .env
+          echo SMTP_HOST=${SMTP_HOST} >> .env
+          echo SMTP_USER=${SMTP_USER} >> .env
+          echo SMTP_PASSWORD=${SMTP_PASSWORD} >> .env
+          echo SMTP_TLS=${SMTP_TLS} >> .env
+          echo SMTP_SSL=${SMTP_SSL} >> .env
+          echo SMTP_PORT=${SMTP_PORT} >> .env
+          echo POSTGRES_SERVER=${POSTGRES_SERVER} >> .env
+          echo POSTGRES_USER=${POSTGRES_USER} >> .env
+          echo POSTGRES_PORT=${POSTGRES_PORT} >> .env
+          echo POSTGRES_DB=${POSTGRES_DB} >> .env
+          echo POSTGRES_PASSWORD=${POSTGRES_PASSWORD} >> .env
+          echo SENTRY_DSN=${SENTRY_DSN} >> .env
+          echo DOCKER_IMAGE_BACKEND=${DOCKER_IMAGE_BACKEND} >> .env
+          echo DOCKER_IMAGE_FRONTEND=${DOCKER_IMAGE_FRONTEND} >> .env
 
       - name: Set up Python
         uses: actions/setup-python@v5

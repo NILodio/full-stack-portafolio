@@ -36,6 +36,7 @@ jobs:
       SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
       DOCKER_IMAGE_BACKEND: ${{ secrets.DOCKER_IMAGE_BACKEND }}
       DOCKER_IMAGE_FRONTEND: ${{ secrets.DOCKER_IMAGE_FRONTEND }}
+      BACKEND_CORS_ORIGINS: ${{ secrets.BACKEND_CORS_ORIGINS }}
 
     steps:
       - name: Checkout code
@@ -67,6 +68,7 @@ jobs:
           echo SENTRY_DSN=${SENTRY_DSN} >> .env
           echo DOCKER_IMAGE_BACKEND=${DOCKER_IMAGE_BACKEND} >> .env
           echo DOCKER_IMAGE_FRONTEND=${DOCKER_IMAGE_FRONTEND} >> .env
+          echo BACKEND_CORS_ORIGINS=${BACKEND_CORS_ORIGINS} >> .env
 
       - name: Build and deploy
         run: |
