@@ -1,3 +1,4 @@
+
 from sqlmodel import Field, Relationship, SQLModel
 
 
@@ -44,6 +45,9 @@ class User(UserBase, table=True):
     hashed_password: str
     items: list["Item"] = Relationship(back_populates="owner")
     educations: list["Education"] = Relationship(back_populates="owner")
+    experiences: list["Experience"] = Relationship(back_populates="owner")
+    skills: list["Skill"] = Relationship(back_populates="owner")
+    tags: list["Tags"] = Relationship(back_populates="owner")
 
 
 # Properties to return via API, id is always required
@@ -179,3 +183,145 @@ class EducationOpen(SQLModel):
     month_end: int
     year_end: int
     percentage: float
+
+
+class TagsBase(SQLModel):
+    """Base model for tags."""
+
+    name: str
+    model_config = {"json_schema_extra": {"examples": [{"name": "Backend"}]}}
+
+
+class Tags(TagsBase, table=True):
+    """Database model for tags."""
+
+    id: int | None = Field(default=None, primary_key=True)
+    name: str
+    owner_id: int | None = Field(default=None, foreign_key="user.id", nullable=False)
+    owner: User | None = Relationship(back_populates="tags")
+
+
+class TagsCreate(TagsBase):
+    pass
+
+
+class TagsUpdate(TagsBase):
+    pass
+
+
+class TagsOut(TagsBase):
+    id: int
+    owner_id: int
+
+
+class SkillBase(SQLModel):
+    """Base model for skills."""
+
+    name: str
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    "name": "Python",
+                }
+            ]
+        }
+    }
+
+
+class SkillCreate(SkillBase):
+    """Model for creating new skill entries."""
+
+    name: str
+
+
+class SkillUpdate(SkillBase):
+    """Model for updating existing skill entries."""
+
+    name: str | None = None  # type: ignore
+
+
+class Skill(SkillBase, table=True):
+    """Database model for skill entries."""
+
+    id: int | None = Field(default=None, primary_key=True)
+    name: str
+    owner_id: int | None = Field(default=None, foreign_key="user.id", nullable=False)
+    owner: User | None = Relationship(back_populates="skills")
+
+
+class SkillOut(SkillBase):
+    id: int
+    owner_id: int
+
+
+class SkillOpen(SQLModel):
+    name: str
+    tags: list | None = None
+
+
+class ExperienceBase(SQLModel):
+    """Base model for work experience."""
+
+    title: str
+    description: str | None = None
+    location: str
+    company: str
+    month_start: int
+    year_start: int
+    month_end: int
+    year_end: int
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    "title": "Software Developer",
+                    "description": "Developing software",
+                    "location": "Canada, Toronto",
+                    "company": "Google",
+                    "month_start": 9,
+                    "year_start": 2023,
+                    "month_end": 6,
+                    "year_end": 2025,
+                }
+            ]
+        }
+    }
+
+
+class ExperienceCreate(ExperienceBase):
+    """Model for creating new work experience entries."""
+
+    title: str
+
+
+class ExperienceUpdate(ExperienceBase):
+    """Model for updating existing work experience entries."""
+
+    title: str | None = None  # type: ignore
+
+
+class Experience(ExperienceBase, table=True):
+    """Database model for work experience entries."""
+
+    id: int | None = Field(default=None, primary_key=True)
+    title: str
+    skill: list["Skill"] = Relationship(back_populates="experience")
+    owner_id: int | None = Field(default=None, foreign_key="user.id", nullable=False)
+    owner: User | None = Relationship(back_populates="experiences")
+
+
+class ExperienceOut(ExperienceBase):
+    id: int
+    owner_id: int
+
+
+class ExperienceOpen(SQLModel):
+    title: str
+    description: str | None = None
+    location: str
+    company: str
+    month_start: int
+    year_start: int
+    month_end: int
+    year_end: int

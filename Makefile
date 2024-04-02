@@ -28,3 +28,14 @@ test:
 .PHONY: down
 down:
 	docker compose down
+
+.PHONY: bash
+bash:
+	docker compose exec backend bash
+
+# alembic revision --autogenerate -m "Add column last_name to User model"
+# alembic upgrade head
+
+.PHONY: migrate
+migrate:
+	docker-compose exec backend bash -c "alembic revision --autogenerate -m '$(argument)' && alembic upgrade head"

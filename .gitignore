@@ -1,3 +1,4 @@
 .vscode
 .python-version
 .env
+.db.json
