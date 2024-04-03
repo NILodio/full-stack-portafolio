@@ -47,7 +47,7 @@ class User(UserBase, table=True):
     educations: list["Education"] = Relationship(back_populates="owner")
     experiences: list["Experience"] = Relationship(back_populates="owner")
     skills: list["Skill"] = Relationship(back_populates="owner")
-    tags: list["Tags"] = Relationship(back_populates="owner")
+    tags: list["Tag"] = Relationship(back_populates="owner")
 
 
 # Properties to return via API, id is always required
@@ -185,14 +185,14 @@ class EducationOpen(SQLModel):
     percentage: float
 
 
-class TagsBase(SQLModel):
+class TagBase(SQLModel):
     """Base model for tags."""
 
     name: str
     model_config = {"json_schema_extra": {"examples": [{"name": "Backend"}]}}
 
 
-class Tags(TagsBase, table=True):
+class Tag(TagBase, table=True):
     """Database model for tags."""
 
     id: int | None = Field(default=None, primary_key=True)
@@ -201,15 +201,15 @@ class Tags(TagsBase, table=True):
     owner: User | None = Relationship(back_populates="tags")
 
 
-class TagsCreate(TagsBase):
+class TagsCreate(TagBase):
     pass
 
 
-class TagsUpdate(TagsBase):
+class TagsUpdate(TagBase):
     pass
 
 
-class TagsOut(TagsBase):
+class TagsOut(TagBase):
     id: int
     owner_id: int
 
@@ -306,7 +306,6 @@ class Experience(ExperienceBase, table=True):
 
     id: int | None = Field(default=None, primary_key=True)
     title: str
-    skill: list["Skill"] = Relationship(back_populates="experience")
     owner_id: int | None = Field(default=None, foreign_key="user.id", nullable=False)
     owner: User | None = Relationship(back_populates="experiences")
 
